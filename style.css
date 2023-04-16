@@ -1,0 +1,76 @@
+body{
+    font-family: 'Work Sans', sans-serif;
+
+}
+
+.navbar{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1em 0;
+}
+
+.navbar i{
+    padding: 0.5em;
+}
+
+.navbar i:hover{
+    background-color: #EDF1D6;
+    color: #40513B;
+    cursor: pointer;
+}
+
+.brand-name{
+    font-family: 'Anton', sans-serif;
+    color:#1A4D2E;
+}
+
+.category-area{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.category-area button{
+    background-color: white;
+    border: none;
+    padding: 0.5em;
+    margin: 0 0.5em;
+}
+
+.category-area button:hover{
+    background-color: #EDF1D6;
+}
+
+#search-input{
+    border: none;
+    border-bottom:1px solid lightgray;
+}
+#search-input:focus{
+    outline: none;
+}
+
+.login-area span{
+    padding: 0 0.5em;
+}
+
+.login-area span:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 991px){
+    .login-area  {
+        display: none;
+    }   
+}
+
+@media screen and (max-width: 575px){
+    .login-area  {
+        display: none;
+    }   
+
+    .brand-name{
+        margin-top: 1em;
+    }
+}
