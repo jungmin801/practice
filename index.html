@@ -18,7 +18,7 @@
             <div class="row navbar">
                 <div class="col-lg-4 col-sm-7 ">
                     <i class="fa-solid fa-bars"></i>
-                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <i class="fa-solid fa-magnifying-glass" id="search-button" onclick="searchByKeyword()"></i>
                     <span>
                         <input type="text" placeholder="search" id="search-input" />
                     </span>
@@ -31,12 +31,11 @@
             </div>
             <div class="category-area">
                 <button>Bread</button>
-                <button>Condiments and sauces</button>
                 <button>Desserts</button>
                 <button>Drinks</button>
                 <button>Main Course</button>
-                <button>Side dish</button>
                 <button>Salad</button>
+                <button>Sandwiches</button>
                 <button>Starter</button>
                 <button>Soup</button>
             </div>
@@ -49,7 +48,7 @@
         </div>
     </section>
     <section class="container">
-        <div class="row row-cols-1 row-cols-md-4 g-4" id="recipes-board">
+        <div class="row row-cols-1 row-cols-md-3 g-4" id="recipes-board">
             
           </div>
     </section>

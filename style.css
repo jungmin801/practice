@@ -106,12 +106,8 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    flex-wrap: wrap;
 } 
-
-.card-text-info i{
-    padding-right: 5px;
-}
-
 
 .card-text-area{
     color: gray;

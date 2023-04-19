@@ -1,50 +1,59 @@
 let recipes = [];
 let recipesList = [];
+let categoryButton = document.querySelectorAll(".category-area button")
+let searchButton = document.getElementById("search-button")
+let url;
 
-//카테고리 버튼을 가져와서 이벤트리스너를 생성
+
+//버튼 클릭
+categoryButton.forEach(item=>item.addEventListener("click",(event)=>ByCategory(event)));
 
 
+//레시피 가져오기
 
+const getRecipes = async() => {
+  let header = new Headers({'x-api-key':'d9c140d574c8e323e87a00a286665ad4'});
+  let response = await fetch(url,{headers:header});
+  let data = await response.json();
 
-const callAPI = async() =>{
-    
-    let url = new URL(`https://api.edamam.com/search?q=vegan&app_id=e3cf5ffc&app_key=d9c140d574c8e323e87a00a286665ad4&from=0&to=20`);
-    let header = new Headers({'x-api-key':'d9c140d574c8e323e87a00a286665ad4'});
-    let response = await fetch(url,{headers:header});
-    let data = await response.json();
+  recipes = data.hits;
+  recipesList = [];
 
-    recipes = data.hits;
-    // for(let i=0;i<=recipes.length;i++){
-    //     recipesList.push(recipes[i].recipe);
-    // }   
-    recipes.forEach((item) => {
-        recipesList.push(item.recipe);
-      });
+  recipes.forEach((item) => {
+      recipesList.push(item.recipe);
+    });
 
-      console.log(recipesList)
-      render()
-
-    
+    render()
 }
 
-callAPI();
+
+// 검색하기
+const searchByKeyword = async() => {
+
+  let Keyword = document.getElementById("search-input").value
+  url = new URL(`https://api.edamam.com/search?q=${Keyword}&app_id=e3cf5ffc&app_key=d9c140d574c8e323e87a00a286665ad4&from=0&to=21`);
+
+  getRecipes();
+  
+}
 
 
-//카테고리별 보여주기
-// const ByCategory() {
-//     let url = new URL(`https://api.edamam.com/search?q=vegan&app_id=e3cf5ffc&app_key=d9c140d574c8e323e87a00a286665ad4&from=0&to=15`);
-//     let header = new Headers({'x-api-key':'d9c140d574c8e323e87a00a286665ad4'});
-//     let response = await fetch(url,{headers:header});
-//     let data = await response.json();
 
-//     recipes = data.hits;
-//     // for(let i=0;i<=recipes.length;i++){
-//     //     recipesList.push(recipes[i].recipe);
-//     // }   
-//     recipes.forEach((item) => {
-//         recipesList.push(item.recipe);
-//       });
-// }
+// 카테고리별 보여주기
+const ByCategory = async(event) => {
+    event.target.textContent.toLowerCase();
+    url = new URL(`https://api.edamam.com/search?q=vegan&app_id=e3cf5ffc&app_key=d9c140d574c8e323e87a00a286665ad4&from=0&to=21&dishType=${categorys}`);
+ 
+  getRecipes();
+}
+
+
+//레시피 불러오기(메인화면)
+const getNewestRecipes = async() =>{
+    url = new URL(`https://api.edamam.com/search?q=vegan&app_id=e3cf5ffc&app_key=d9c140d574c8e323e87a00a286665ad4&from=0&to=21`);
+    getRecipes();
+}
+
 
 
 
@@ -52,8 +61,6 @@ callAPI();
 // 화면 보여주기
 const render = () => {
     let recipesHTML="";
-
-
 
     recipesHTML = recipesList.map((item) => {
         return `<div class="col">
@@ -70,7 +77,8 @@ const render = () => {
                         ? "Unknown"
                         : item.totalTime+"min"
                     }</span>
-                    <span>${Math.ceil(item.calories/item.yield)}Kcal/serving</span>
+                    <span>
+                    <i class="fa-solid fa-fire"></i> ${Math.ceil(item.calories/item.yield)}Kcal/serving</span>
                 </div>
             </div>
           </div>
@@ -81,3 +89,7 @@ const render = () => {
     document.getElementById("recipes-board").innerHTML = recipesHTML;
 }
 
+
+searchByKeyword();
+ByCategory();
+getNewestRecipes();
