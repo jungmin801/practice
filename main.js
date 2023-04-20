@@ -17,10 +17,20 @@ const getRecipes = async() => {
 
   let header = new Headers({'x-api-key':'d9c140d574c8e323e87a00a286665ad4'});
 
-  url.searchParams.set("from", currentPage)
-  url.searchParams.set("to", currentPage+21)
-  console.log(url)
+  if(currentPage == 1) {
+    url.searchParams.set("from", 1)
+    url.searchParams.set("to", 31)
+  } else if (currentPage == 226) {
+    url.searchParams.set("from", (currentPage*31)-30)
+    url.searchParams.set("to", 7000)
+  }
+    else if(currentPage > 1) {
+    url.searchParams.set("from", (currentPage*31)-30)
+    url.searchParams.set("to", currentPage*31)
+  }
+  
 
+  console.log(url)
 
   let response = await fetch(url,{headers:header});
   let data = await response.json();
@@ -51,10 +61,9 @@ const getRecipes = async() => {
 
 
 
-//레시피 불러오기(메인화면)
-const getNewestRecipes = async() =>{
-    url = new URL(`https://api.edamam.com/search?q=vegan&app_id=e3cf5ffc&app_key=d9c140d574c8e323e87a00a286665ad4&from=1&to=22`);
-    console.log(url);
+//메인화면
+const getMainPage = async() =>{
+    url = new URL(`https://api.edamam.com/search?q=vegan&app_id=e3cf5ffc&app_key=d9c140d574c8e323e87a00a286665ad4&from=1&to=31`);
     
     getRecipes();
 }
@@ -64,7 +73,7 @@ const getNewestRecipes = async() =>{
 const searchByKeyword = async() => {
 
   let Keyword = document.getElementById("search-input").value
-  url = new URL(`https://api.edamam.com/search?q=vegan+${Keyword}&app_id=e3cf5ffc&app_key=d9c140d574c8e323e87a00a286665ad4&from=1&to=22`);
+  url = new URL(`https://api.edamam.com/search?q=vegan+${Keyword}&app_id=e3cf5ffc&app_key=d9c140d574c8e323e87a00a286665ad4&from=1&to=31`);
 
   getRecipes();
   
@@ -73,7 +82,7 @@ const searchByKeyword = async() => {
 // 카테고리별 보여주기
 const ByCategory = async(event) => {
   let category = event.target.textContent.toLowerCase();
-  url = new URL(`https://api.edamam.com/search?q=vegan&app_id=e3cf5ffc&app_key=d9c140d574c8e323e87a00a286665ad4&from=1&to=22&dishType=${category}`);
+  url = new URL(`https://api.edamam.com/search?q=vegan&app_id=e3cf5ffc&app_key=d9c140d574c8e323e87a00a286665ad4&from=1&to=31&dishType=${category}`);
 
   getRecipes();
 }
@@ -134,19 +143,51 @@ const errorRender = (message) => {
 // totalPage : 총 페이지 수 -> 
 // currentPage : 현재 페이지 -> 1
 // pageCount: 화면에 나타날 페이지 개 -> 10개
-// limit: 한 페이지 당 나타낼 데이터의 개수 -> 21개
+// limit: 한 페이지 당 나타낼 데이터의 개수 -> 31개
 // pageGroup : 페이지 개수 10개 = 페이지 그룹 1개
 
 const pagination = () => {
     let paginationHTML="";
 
+    let totalPage = Math.ceil(totalCount/31)
     let pageGroup = Math.ceil(currentPage/10);
     let last = pageGroup*10
     let first = last - 9
 
+
+    if(first > 10){
+    paginationHTML =`
+    <li class="page-item">
+    <a class="page-link" href="#" aria-label="Previous" onclick="moveToPage(${currentPage - (currentPage-1)})">
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+    
+    <li class="page-item">
+    <a class="page-link" href="#" aria-label="Previous" onclick="moveToPage(${currentPage - 1})">
+      <span aria-hidden="true">&lt;</span>
+    </a>
+    </li>`
+    }
     for(let i=first;i<=last;i++){
       paginationHTML += `<li class="page-item ${currentPage==i? "active":""}"><a class="page-link" href="#" onclick="moveToPage(${i})">${i}</a></li>`
     }
+
+    
+    if(last < totalPage){
+      paginationHTML += `
+    <li class="page-item">
+    <a class="page-link" href="#" aria-label="Next" onclick="moveToPage(${currentPage + 1})">
+      <span aria-hidden="true">&gt;</span>
+    </a>
+    </li>
+  
+    <li class="page-item">
+    <a class="page-link" href="#" aria-label="Next" onclick="moveToPage(${totalPage})">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+    </li>
+  `
+  }
 
     document.querySelector(".pagination").innerHTML = paginationHTML; 
 }
@@ -159,4 +200,4 @@ const moveToPage = (pageNum) => {
 
 searchByKeyword();
 ByCategory();
-getNewestRecipes();
+getMainPage();
