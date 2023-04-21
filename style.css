@@ -58,9 +58,19 @@ body{
     cursor: pointer;
 }
 
-.card img{
-    height: 200px;
+.card-img-box{
+    overflow: hidden;
+}
+
+.card-img{
+    height: 280px;
     object-fit: cover;
+    transition: 0.3s;
+}
+
+.card-img:hover{
+    transform: scale(1.2);
+
 }
 
 
@@ -83,6 +93,24 @@ body{
     margin-top: 10px;
 }
 
+.card-title-area a{
+    color:black;
+    text-decoration: none;
+}
+
+.card-title-area a:hover{
+    text-decoration: underline;
+    color: #1A4D2E;
+}
+
+.page-nav{
+    margin-top: 16px;
+}
+
+.page-ul{
+    display: flex;
+    justify-content: center;
+}
 
 
 @media screen and (max-width: 991px){

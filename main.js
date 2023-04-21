@@ -96,16 +96,18 @@ const render = () => {
     recipesHTML = recipesList.map((item) => {
         return `<div class="col">
         <div class="card h-100 shadow-sm">
-          <img class="card-img-top" src="${
-            item.image == null 
-          ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU"
-          : item.image}">
+          <div class="card-img-box">
+            <img class="card-img-top card-img" src="${
+              item.image == null 
+            ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqEWgS0uxxEYJ0PsOb2OgwyWvC0Gjp8NUdPw&usqp=CAU"
+            : item.image}">
+          </div>
           <div class="card-body card-body-area">
             <div class="card-title-area">
-              <h5 class="card-title" style="font-weight: bold">${
+              <a href ="${item.url}" target="_blank"><h5 class="card-title" style="font-weight: bold">${
                 item.label == null
               ? "Unknown"
-              : item.label}</h5>
+              : item.label}</h5></a>
             </div>
             <div class="card-text card-text-area">
                 <div class="card-text-info">
@@ -151,8 +153,11 @@ const pagination = () => {
 
     let totalPage = Math.ceil(totalCount/31)
     let pageGroup = Math.ceil(currentPage/10);
-    let last = pageGroup*10
-    let first = last - 9
+    let last = pageGroup*10;
+      if (last > totalPage) {
+        last = totalPage
+      }
+    let first = last - 9 <= 0 ? 1 : last -9; 
 
 
     if(first > 10){
